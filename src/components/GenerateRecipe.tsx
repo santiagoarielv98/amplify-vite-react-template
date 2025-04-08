@@ -62,7 +62,7 @@ export const GenerateRecipe = () => {
   };
 
   return (
-    <View padding={tokens.space.medium}>
+    <View>
       <Card variation="elevated">
         <Heading level={3} padding={tokens.space.medium} textAlign="center">Generate a Recipe</Heading>
 

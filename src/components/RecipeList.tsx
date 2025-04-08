@@ -1,7 +1,9 @@
-import { Collection } from '@aws-amplify/ui-react';
+import { Collection, Heading, useTheme, View } from '@aws-amplify/ui-react';
 import { RecipeCard, RecipeProps } from './RecipeCard';
 
 export const RecipeList = () => {
+    const { tokens } = useTheme();
+
     const exampleRecipes: RecipeProps[] = [
         {
             title: 'Mediterranean Quinoa Bowl',
@@ -11,7 +13,7 @@ export const RecipeList = () => {
             servings: 4,
             difficulty: 'easy',
             ingredients: [
-                'Quinoa', 'Bell Peppers', 'Zucchini', 'Chickpeas', 'Cherry Tomatoes', 
+                'Quinoa', 'Bell Peppers', 'Zucchini', 'Chickpeas', 'Cherry Tomatoes',
                 'Cucumber', 'Red Onion', 'Feta Cheese', 'Tahini', 'Lemon Juice', 'Olive Oil'
             ],
             restrictions: ['Vegetarian', 'Gluten-Free'],
@@ -25,7 +27,7 @@ export const RecipeList = () => {
             servings: 2,
             difficulty: 'medium',
             ingredients: [
-                'Chicken', 'Thai Basil', 'Thai Chili', 'Garlic', 'Soy Sauce', 
+                'Chicken', 'Thai Basil', 'Thai Chili', 'Garlic', 'Soy Sauce',
                 'Fish Sauce', 'Brown Sugar', 'Oyster Sauce', 'Vegetable Oil'
             ],
             restrictions: ['Dairy-Free'],
@@ -39,7 +41,7 @@ export const RecipeList = () => {
             servings: 4,
             difficulty: 'easy',
             ingredients: [
-                'Avocados', 'Cocoa Powder', 'Maple Syrup', 'Vanilla Extract', 
+                'Avocados', 'Cocoa Powder', 'Maple Syrup', 'Vanilla Extract',
                 'Almond Milk', 'Salt', 'Dark Chocolate'
             ],
             restrictions: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
@@ -47,15 +49,23 @@ export const RecipeList = () => {
         }
     ];
 
-    return <Collection
-        items={exampleRecipes}
-        type="list"
-        direction="column"
-        gap="20px"
-        wrap="nowrap"
-    >
-        {(item, index) => (
-            <RecipeCard key={index} {...item} />
-        )}
-    </Collection>
+    return (
+        <View
+            backgroundColor={tokens.colors.background.primary}
+        >
+            <Heading level={3} padding={tokens.space.medium} textAlign="center">Generate a Recipe</Heading>
+
+            <Collection
+                items={exampleRecipes}
+                type="list"
+                direction="column"
+                gap="20px"
+                wrap="nowrap"
+            >
+                {(item, index) => (
+                    <RecipeCard key={index} {...item} />
+                )}
+            </Collection>
+        </View>
+    );
 }

@@ -42,7 +42,6 @@ export const RecipeCard = ({
 
   return (
     <View
-      backgroundColor={tokens.colors.background.secondary}
       padding={tokens.space.medium}
     >
       <Card>
