@@ -16,7 +16,6 @@ export const RecipeList = () => {
             ],
             restrictions: ['Vegetarian', 'Gluten-Free'],
             tags: ['Healthy', 'Mediterranean'],
-            image: '/road-to-milford-new-zealand-800w.jpg'
         },
         {
             title: 'Spicy Thai Basil Chicken',
@@ -31,7 +30,6 @@ export const RecipeList = () => {
             ],
             restrictions: ['Dairy-Free'],
             tags: ['Thai', 'Spicy', 'Quick'],
-            image: '/road-to-milford-new-zealand-800w.jpg'
         },
         {
             title: 'Vegan Chocolate Avocado Mousse',
@@ -46,7 +44,6 @@ export const RecipeList = () => {
             ],
             restrictions: ['Vegan', 'Gluten-Free', 'Dairy-Free'],
             tags: ['Dessert', 'Healthy'],
-            image: '/road-to-milford-new-zealand-800w.jpg'
         }
     ];
 
