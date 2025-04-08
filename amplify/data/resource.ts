@@ -13,7 +13,7 @@ const schema = a.schema({
     steps: a.string().array(),
     tags: a.string().array(),
     image: a.string(),
-  })
+  }),
 });
 
 export type Schema = ClientSchema<typeof schema>;

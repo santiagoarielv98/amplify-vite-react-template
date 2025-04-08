@@ -1,5 +1,5 @@
-import { Flex, useTheme, View } from '@aws-amplify/ui-react';
-import { GenerateRecipe } from './components/GenerateRecipe';
+import { Flex, useTheme, View } from "@aws-amplify/ui-react";
+import { GenerateRecipe } from "./components/GenerateRecipe";
 import { RecipeList } from "./components/RecipeList";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <View
       padding={{
         base: tokens.space.medium,
-        large: tokens.space.xl
+        large: tokens.space.xl,
       }}
     >
       <Flex

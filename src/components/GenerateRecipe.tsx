@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   Heading,
@@ -10,37 +10,47 @@ import {
   Flex,
   View,
   useTheme,
-  Badge
-} from '@aws-amplify/ui-react';
-import { useState } from 'react';
+  Badge,
+} from "@aws-amplify/ui-react";
+import { useState } from "react";
 
 export const GenerateRecipe = () => {
   const { tokens } = useTheme();
-  const [generationType, setGenerationType] = useState('idea');
-  const [idea, setIdea] = useState('');
-  const [ingredients, setIngredients] = useState('');
+  const [generationType, setGenerationType] = useState("idea");
+  const [idea, setIdea] = useState("");
+  const [ingredients, setIngredients] = useState("");
   const [restrictions, setRestrictions] = useState<string[]>([]);
-  const [customRestriction, setCustomRestriction] = useState('');
+  const [customRestriction, setCustomRestriction] = useState("");
 
-  const predefinedRestrictions = ['Gluten-Free', 'Vegetarian', 'Vegan', 'Dairy-Free', 'Nut-Free', 'Low-Carb'];
+  const predefinedRestrictions = [
+    "Gluten-Free",
+    "Vegetarian",
+    "Vegan",
+    "Dairy-Free",
+    "Nut-Free",
+    "Low-Carb",
+  ];
 
   const toggleRestriction = (restriction: string) => {
     if (restrictions.includes(restriction)) {
-      setRestrictions(restrictions.filter(r => r !== restriction));
+      setRestrictions(restrictions.filter((r) => r !== restriction));
     } else {
       setRestrictions([...restrictions, restriction]);
     }
   };
 
   const addCustomRestriction = () => {
-    if (customRestriction.trim() !== '' && !restrictions.includes(customRestriction.trim())) {
+    if (
+      customRestriction.trim() !== "" &&
+      !restrictions.includes(customRestriction.trim())
+    ) {
       setRestrictions([...restrictions, customRestriction.trim()]);
-      setCustomRestriction('');
+      setCustomRestriction("");
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       addCustomRestriction();
     }
@@ -51,39 +61,45 @@ export const GenerateRecipe = () => {
     // Here you would handle the recipe generation
     console.log({
       generationType,
-      idea: generationType === 'idea' ? idea : '',
-      ingredients: generationType === 'ingredients' ? ingredients : '',
-      restrictions
+      idea: generationType === "idea" ? idea : "",
+      ingredients: generationType === "ingredients" ? ingredients : "",
+      restrictions,
     });
     // Reset form
-    setIdea('');
-    setIngredients('');
+    setIdea("");
+    setIngredients("");
     setRestrictions([]);
   };
 
   return (
     <View>
       <Card variation="elevated">
-        <Heading level={3} padding={tokens.space.medium} textAlign="center">Generate a Recipe</Heading>
+        <Heading level={3} padding={tokens.space.medium} textAlign="center">
+          Generate a Recipe
+        </Heading>
 
         <form onSubmit={handleSubmit}>
-          <Flex direction="column" gap={tokens.space.medium} padding={tokens.space.medium}>
+          <Flex
+            direction="column"
+            gap={tokens.space.medium}
+            padding={tokens.space.medium}
+          >
             <RadioGroupField
               legend="Generation Method"
               name="generationType"
               value={generationType}
-              onChange={e => setGenerationType(e.target.value)}
+              onChange={(e) => setGenerationType(e.target.value)}
             >
               <Radio value="idea">By Idea</Radio>
               <Radio value="ingredients">By Ingredients</Radio>
             </RadioGroupField>
 
-            {generationType === 'idea' ? (
+            {generationType === "idea" ? (
               <TextField
                 label="Recipe Idea"
                 placeholder="E.g. A light summer dinner"
                 value={idea}
-                onChange={e => setIdea(e.target.value)}
+                onChange={(e) => setIdea(e.target.value)}
                 required
               />
             ) : (
@@ -91,7 +107,7 @@ export const GenerateRecipe = () => {
                 label="Ingredients"
                 placeholder="Enter ingredients, one per line"
                 value={ingredients}
-                onChange={e => setIngredients(e.target.value)}
+                onChange={(e) => setIngredients(e.target.value)}
                 rows={4}
                 required
               />
@@ -99,54 +115,64 @@ export const GenerateRecipe = () => {
 
             <Heading level={5}>Dietary Restrictions</Heading>
             <Flex direction="row" wrap="wrap" gap={tokens.space.small}>
-              {predefinedRestrictions.map(restriction => (
+              {predefinedRestrictions.map((restriction) => (
                 <Badge
                   key={restriction}
-                  variation={restrictions.includes(restriction) ? "success" : "warning"}
+                  variation={
+                    restrictions.includes(restriction) ? "success" : "warning"
+                  }
                   onClick={() => toggleRestriction(restriction)}
-                  style={{ 
-                    cursor: 'pointer',
+                  style={{
+                    cursor: "pointer",
                     opacity: restrictions.includes(restriction) ? 1 : 0.7,
-                    padding: '8px 12px'
+                    padding: "8px 12px",
                   }}
                 >
                   {restriction}
                 </Badge>
               ))}
-              
-              {restrictions.filter(r => !predefinedRestrictions.includes(r)).map(customR => (
-                <Badge
-                  key={customR}
-                  variation="success"
-                  onClick={() => toggleRestriction(customR)}
-                  style={{ 
-                    cursor: 'pointer',
-                    padding: '8px 12px'
-                  }}
-                >
-                  {customR}
-                  <span 
-                    style={{ 
-                      marginLeft: '8px', 
-                      fontWeight: 'bold' 
+
+              {restrictions
+                .filter((r) => !predefinedRestrictions.includes(r))
+                .map((customR) => (
+                  <Badge
+                    key={customR}
+                    variation="success"
+                    onClick={() => toggleRestriction(customR)}
+                    style={{
+                      cursor: "pointer",
+                      padding: "8px 12px",
                     }}
                   >
-                    ×
-                  </span>
-                </Badge>
-              ))}
+                    {customR}
+                    <span
+                      style={{
+                        marginLeft: "8px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ×
+                    </span>
+                  </Badge>
+                ))}
             </Flex>
 
-            <Flex direction="row" alignItems="flex-end" gap={tokens.space.small}>
+            <Flex
+              direction="row"
+              alignItems="flex-end"
+              gap={tokens.space.small}
+            >
               <TextField
                 label="Add Custom Restriction"
                 placeholder="E.g. Low-sodium"
                 value={customRestriction}
-                onChange={e => setCustomRestriction(e.target.value)}
+                onChange={(e) => setCustomRestriction(e.target.value)}
                 onKeyPress={handleKeyPress}
                 flex="1"
               />
-              <Button onClick={addCustomRestriction} type="button">Add</Button>
+              <Button onClick={addCustomRestriction} type="button">
+                Add
+              </Button>
             </Flex>
 
             <Button type="submit" variation="primary" width="100%">
