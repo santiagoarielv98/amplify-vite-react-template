@@ -12,8 +12,13 @@ import {
   View,
 } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
+// import { useImageGenerator } from "../hooks/_useImageGenerator";
+// import { generateClient } from "aws-amplify/data";
+
+// const client = generateClient<Schema>();
 
 export const RecipeCard = ({
+  id,
   title,
   description,
   prepTime,
@@ -25,10 +30,39 @@ export const RecipeCard = ({
   image,
 }: Schema["Recipe"]["type"]) => {
   const { tokens } = useTheme();
+  // const { loading, error, generateImage } = useImageGenerator();
+  // const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  // const [imageUrl, setImageUrl] = useState<string | null>(image || null);
+
+  // const handleGenerateImage = async () => {
+  //   if (!title) return;
+  //   console.log(id);
+
+  //   // setIsGeneratingImage(true);
+  //   // try {
+  //   //   const newImageUrl = await generateImage({
+  //   //     title,
+  //   //     description: description || undefined,
+  //   //   });
+
+  //   //   if (newImageUrl && id) {
+  //   //     // Update the recipe with the new image URL
+  //   //     await client.models.Recipe.update({
+  //   //       id,
+  //   //       image: newImageUrl,
+  //   //     });
+  //   //     setImageUrl(newImageUrl);
+  //   //   }
+  //   // } catch (err) {
+  //   //   console.error("Failed to generate image:", err);
+  //   // } finally {
+  //   //   setIsGeneratingImage(false);
+  //   // }
+  // };
 
   return (
     <View padding={tokens.space.medium}>
-      <Card>
+      <Card onClick={() => console.log("Card clicked", id)}>
         <Flex
           direction={{
             base: "column",
@@ -69,13 +103,28 @@ export const RecipeCard = ({
                 aspectRatio: "1 / 1",
               }}
             >
-              <Icon ariaLabel="No image" viewBox={{ width: 24, height: 24 }}>
-                <span>image</span>
-              </Icon>
-              <Text>No Image Available</Text>
-              <Button size="small" variation="link">
-                Generate Image
-              </Button>
+              {/* {isGeneratingImage ? (
+                <Loader size="large" />
+              ) : (
+                <>
+                  <Icon
+                    ariaLabel="No image"
+                    viewBox={{ width: 24, height: 24 }}
+                  >
+                    <span>image</span>
+                  </Icon>
+                  <Text>No Image Available</Text>
+                  <Button
+                    size="small"
+                    variation="link"
+                    onClick={handleGenerateImage}
+                    isLoading={isGeneratingImage}
+                    loadingText="Generating..."
+                  >
+                    Generate Image
+                  </Button>
+                </>
+              )} */}
             </Flex>
           )}
 
