@@ -10,21 +10,8 @@ import {
   useBreakpointValue,
   useTheme,
   View,
-} from '@aws-amplify/ui-react';
-
-export interface RecipeProps {
-  title: string;
-  description: string;
-  prepTime?: number;
-  cookTime?: number;
-  servings?: number;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  ingredients: string[];
-  restrictions: string[];
-  tags: string[];
-  image?: string;
-  steps?: string[];
-}
+} from "@aws-amplify/ui-react";
+import { Schema } from "../../amplify/data/resource";
 
 export const RecipeCard = ({
   title,
@@ -33,22 +20,19 @@ export const RecipeCard = ({
   cookTime,
   servings,
   difficulty,
-  ingredients,
   restrictions,
   tags,
   image,
-}: RecipeProps) => {
+}: Schema["Recipe"]["type"]) => {
   const { tokens } = useTheme();
 
   return (
-    <View
-      padding={tokens.space.medium}
-    >
+    <View padding={tokens.space.medium}>
       <Card>
         <Flex
           direction={{
-            base: 'column',
-            medium: 'row'
+            base: "column",
+            medium: "row",
           }}
           alignItems="flex-start"
         >
@@ -57,46 +41,41 @@ export const RecipeCard = ({
               alt={title}
               src={image}
               width={{
-                base: '100%',
-                medium: '33%'
+                base: "100%",
+                medium: "33%",
               }}
-              height={
-                {
-                  base: '200px',
-                  medium: 'auto'
-                }
-              }
+              height={{
+                base: "200px",
+                medium: "auto",
+              }}
               objectFit="cover"
             />
           ) : (
             <Flex
               width={{
-                base: '100%',
-                medium: '33%'
+                base: "100%",
+                medium: "33%",
               }}
-              height={
-                {
-                  base: '200px',
-                  medium: 'auto'
-                }
-              }
+              height={{
+                base: "200px",
+                medium: "auto",
+              }}
               backgroundColor={tokens.colors.neutral[20]}
               justifyContent="center"
               alignItems="center"
               direction="column"
               gap={tokens.space.small}
               style={{
-                aspectRatio: '1 / 1',
+                aspectRatio: "1 / 1",
               }}
             >
-              <Icon
-                ariaLabel="No image"
-                viewBox={{ width: 24, height: 24 }}
-              >
+              <Icon ariaLabel="No image" viewBox={{ width: 24, height: 24 }}>
                 <span>image</span>
               </Icon>
               <Text>No Image Available</Text>
-              <Button size="small" variation="link">Generate Image</Button>
+              <Button size="small" variation="link">
+                Generate Image
+              </Button>
             </Flex>
           )}
 
@@ -104,28 +83,26 @@ export const RecipeCard = ({
             direction="column"
             alignItems="flex-start"
             gap={tokens.space.xs}
-            padding={
-              {
-                base: tokens.space.small,
-                medium: tokens.space.medium
-              }
-            }
+            padding={{
+              base: tokens.space.small,
+              medium: tokens.space.medium,
+            }}
             flex="1"
             width={{
-              base: '100%',
-              medium: 'auto'
+              base: "100%",
+              medium: "auto",
             }}
           >
             <Flex
               width="100%"
               justifyContent="space-between"
               alignItems={{
-                base: 'flex-start',
-                small: 'center'
+                base: "flex-start",
+                small: "center",
               }}
               direction={{
-                base: 'column',
-                small: 'row'
+                base: "column",
+                small: "row",
               }}
               gap={tokens.space.xxs}
             >
@@ -133,28 +110,38 @@ export const RecipeCard = ({
                 level={5}
                 fontSize={{
                   base: tokens.fontSizes.large,
-                  medium: tokens.fontSizes.xl
+                  medium: tokens.fontSizes.xl,
                 }}
               >
                 {title}
               </Heading>
               {difficulty && (
-                <Badge size="small" variation={
-                  difficulty === 'easy' ? 'success' :
-                    difficulty === 'medium' ? 'warning' : 'error'
-                }>
+                <Badge
+                  size="small"
+                  variation={
+                    difficulty === "easy"
+                      ? "success"
+                      : difficulty === "medium"
+                        ? "warning"
+                        : "error"
+                  }
+                >
                   {difficulty} difficulty
                 </Badge>
               )}
             </Flex>
 
-            <Flex gap={tokens.space.xs} wrap="wrap" marginTop={tokens.space.xxs}>
-              {tags.map((tag, index) => (
+            <Flex
+              gap={tokens.space.xs}
+              wrap="wrap"
+              marginTop={tokens.space.xxs}
+            >
+              {tags?.map((tag, index) => (
                 <Badge key={index} size="small" variation="info">
                   {tag}
                 </Badge>
               ))}
-              {restrictions.map((restriction, index) => (
+              {restrictions?.map((restriction, index) => (
                 <Badge key={index} size="small" variation="warning">
                   {restriction}
                 </Badge>
@@ -166,27 +153,23 @@ export const RecipeCard = ({
               marginTop={tokens.space.small}
               fontSize={{
                 base: tokens.fontSizes.small,
-                medium: tokens.fontSizes.medium
+                medium: tokens.fontSizes.medium,
               }}
             >
               {description}
             </Text>
 
             <Flex
-              gap={
-                {
-                  base: tokens.space.xs,
-                  small: tokens.space.large
-                }
-              }
+              gap={{
+                base: tokens.space.xs,
+                small: tokens.space.large,
+              }}
               marginTop={tokens.space.medium}
               width="100%"
-              direction={
-                {
-                  base: 'column',
-                  small: 'row'
-                }
-              }
+              direction={{
+                base: "column",
+                small: "row",
+              }}
               wrap="wrap"
             >
               {prepTime && (
@@ -229,10 +212,12 @@ export const RecipeCard = ({
             <Button
               variation="primary"
               marginTop={tokens.space.medium}
-              isFullWidth={useBreakpointValue({
-                base: true,
-                small: false
-              }) as boolean}
+              isFullWidth={
+                useBreakpointValue({
+                  base: true,
+                  small: false,
+                }) as boolean
+              }
             >
               <Flex alignItems="center" gap={tokens.space.xs}>
                 <Icon
@@ -245,8 +230,8 @@ export const RecipeCard = ({
               </Flex>
             </Button>
           </Flex>
-        </Flex >
-      </Card >
-    </View >
+        </Flex>
+      </Card>
+    </View>
   );
 };

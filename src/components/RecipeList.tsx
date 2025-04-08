@@ -1,14 +1,14 @@
 import { Collection, Heading, useTheme, View } from "@aws-amplify/ui-react";
-import { RecipeCard, RecipeProps } from "./RecipeCard";
 import { generateClient } from "aws-amplify/data";
-import { Schema } from "../../amplify/data/resource";
 import { useEffect, useState } from "react";
+import { Schema } from "../../amplify/data/resource";
+import { RecipeCard } from "./RecipeCard";
 
 const client = generateClient<Schema>();
 
 export const RecipeList = () => {
   const { tokens } = useTheme();
-  const [recipes, setRecipes] = useState<RecipeProps[]>([]);
+  const [recipes, setRecipes] = useState<Schema["Recipe"]["type"][]>([]);
 
   useEffect(() => {
     client.models.Recipe.observeQuery().subscribe({
