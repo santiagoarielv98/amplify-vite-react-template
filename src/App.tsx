@@ -1,23 +1,23 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator, Button } from '@aws-amplify/ui-react';
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
 import { RecipeList } from "./components/RecipeList";
+import { GenerateRecipe } from './components/GenerateRecipe';
+import './App.css';
+
 const client = generateClient<Schema>();
 
 function App() {
   const { user, signOut } = useAuthenticator();
 
-  // useEffect(() => {
-  //   client.models.Todo.observeQuery().subscribe({
-  //     next: (data) => setTodos([...data.items]),
-  //   });
-  // }, []);
-
   return (
     <main>
-      <h1>{user?.signInDetails?.loginId}</h1>
+      <h1>Welcome, {user?.signInDetails?.loginId}</h1>
+      <GenerateRecipe />
       <RecipeList />
-      <button onClick={signOut}>Sign out</button>
+      <div className="sign-out-button">
+        <Button onClick={signOut} variation="destructive">Sign out</Button>
+      </div>
     </main>
   );
 }
