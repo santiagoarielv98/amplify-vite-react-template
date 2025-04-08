@@ -10,7 +10,32 @@ import {
   useTheme,
 } from '@aws-amplify/ui-react';
 
-export const RecipeCard = () => {
+export interface RecipeProps {
+  title: string;
+  description: string;
+  prepTime?: number;
+  cookTime?: number;
+  servings?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  ingredients: string[];
+  restrictions: string[];
+  tags: string[];
+  image?: string;
+  steps?: string[];
+}
+
+export const RecipeCard = ({
+  title,
+  description,
+  prepTime,
+  cookTime,
+  servings,
+  difficulty,
+  ingredients,
+  restrictions,
+  tags,
+  image = "/road-to-milford-new-zealand-800w.jpg", // default image if none provided
+}: RecipeProps) => {
   const { tokens } = useTheme();
   return (
     <View
@@ -20,33 +45,54 @@ export const RecipeCard = () => {
       <Card>
         <Flex direction="row" alignItems="flex-start">
           <Image
-            alt="Road to milford sound"
-            src="/road-to-milford-new-zealand-800w.jpg"
+            alt={title}
+            src={image}
             width="33%"
           />
           <Flex
             direction="column"
             alignItems="flex-start"
             gap={tokens.space.xs}
+            padding={tokens.space.medium}
           >
-            <Flex>
-              <Badge size="small" variation="info">
-                Plus
-              </Badge>
-              <Badge size="small" variation="success">
-                Verified
-              </Badge>
+            <Flex gap={tokens.space.xs} wrap="wrap">
+              {tags.map((tag, index) => (
+                <Badge key={index} size="small" variation="info">
+                  {tag}
+                </Badge>
+              ))}
+              {restrictions.map((restriction, index) => (
+                <Badge key={index} size="small" variation="warning">
+                  {restriction}
+                </Badge>
+              ))}
+              {difficulty && (
+                <Badge size="small" variation={
+                  difficulty === 'easy' ? 'success' : 
+                  difficulty === 'medium' ? 'warning' : 'error'
+                }>
+                  {difficulty}
+                </Badge>
+              )}
             </Flex>
 
             <Heading level={5}>
-              New Zealand White Water Outdoor Adventure
+              {title}
             </Heading>
 
             <Text as="span">
-              Join us on this beautiful outdoor adventure through the glittering
-              rivers through the snowy peaks on New Zealand.
+              {description}
             </Text>
-            <Button variation="primary">Book it</Button>
+            
+            {(prepTime || cookTime || servings) && (
+              <Flex gap={tokens.space.medium} marginTop={tokens.space.xs}>
+                {prepTime && <Text as="span">Prep: {prepTime} min</Text>}
+                {cookTime && <Text as="span">Cook: {cookTime} min</Text>}
+                {servings && <Text as="span">Serves: {servings}</Text>}
+              </Flex>
+            )}
+
+            <Button variation="primary" marginTop={tokens.space.small}>View Recipe</Button>
           </Flex>
         </Flex>
       </Card>
