@@ -86,6 +86,9 @@ export const RecipeCard = ({
               alignItems="center"
               direction="column"
               gap={tokens.space.small}
+              style={{
+                aspectRatio: '1 / 1',
+              }}
             >
               <Icon
                 ariaLabel="No image"

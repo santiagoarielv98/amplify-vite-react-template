@@ -1,4 +1,3 @@
-import './App.css';
 import { GenerateRecipe } from './components/GenerateRecipe';
 import { RecipeList } from "./components/RecipeList";
 
