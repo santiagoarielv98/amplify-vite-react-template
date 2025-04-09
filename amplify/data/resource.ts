@@ -1,6 +1,18 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { generateRecipe } from "../functions/generate-recipe/resource";
 
 const schema = a.schema({
+  generateRecipe: a
+    .query()
+    .arguments({
+      generateType: a.enum(["idea", "ingredients"]),
+      idea: a.string(),
+      ingredients: a.string().array().default([]),
+      restrictions: a.string().array().default([]),
+    })
+    .returns(a.ref("Recipe"))
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(generateRecipe)),
   Recipe: a
     .model({
       title: a.string().required(),
@@ -15,38 +27,6 @@ const schema = a.schema({
       tags: a.string().array(),
       image: a.string(),
     })
-    .authorization((allow) => [allow.authenticated()]),
-  generateRecipe: a
-    .generation({
-      aiModel: a.ai.model("Claude 3 Haiku"),
-      systemPrompt: `
-        Generate a recipe based on the following details:
-        - Generation Type: {generationType}
-        - Idea: {idea}
-        - Ingredients: {ingredients}
-        - Restrictions: {restrictions}
-        - Format the response as JSON`,
-    })
-    .arguments({
-      generationType: a.enum(["idea", "ingredients"]),
-      idea: a.string(),
-      ingredients: a.string(),
-      restrictions: a.string().array(),
-    })
-    .returns(
-      a.customType({
-        title: a.string().required(),
-        description: a.string(),
-        prepTime: a.integer(),
-        cookTime: a.integer(),
-        servings: a.integer(),
-        difficulty: a.enum(["easy", "medium", "hard"]),
-        ingredients: a.string().array(),
-        restrictions: a.string().array(),
-        steps: a.string().array(),
-        tags: a.string().array(),
-      }),
-    )
     .authorization((allow) => [allow.authenticated()]),
   generateImage: a
     .generation({
