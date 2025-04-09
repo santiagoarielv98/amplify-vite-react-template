@@ -113,15 +113,15 @@ export const RecipeCard = ({
                   >
                     <span>image</span>
                   </Icon>
-                  <Text>No Image Available</Text>
+                  <Text>No hay imagen disponible</Text>
                   <Button
                     size="small"
                     variation="link"
                     onClick={handleGenerateImage}
                     isLoading={isGeneratingImage}
-                    loadingText="Generating..."
+                    loadingText="Generando..."
                   >
-                    Generate Image
+                    Generar Imagen
                   </Button>
                 </>
               )} */}
@@ -175,7 +175,12 @@ export const RecipeCard = ({
                         : "error"
                   }
                 >
-                  {difficulty} difficulty
+                  dificultad{" "}
+                  {difficulty === "easy"
+                    ? "fácil"
+                    : difficulty === "medium"
+                      ? "media"
+                      : "difícil"}
                 </Badge>
               )}
             </Flex>
@@ -229,7 +234,7 @@ export const RecipeCard = ({
                   >
                     <span>clock</span>
                   </Icon>
-                  <Text as="span">Prep: {prepTime} min</Text>
+                  <Text as="span">Preparación: {prepTime} min</Text>
                 </Flex>
               )}
 
@@ -241,7 +246,7 @@ export const RecipeCard = ({
                   >
                     <span>timer</span>
                   </Icon>
-                  <Text as="span">Cook: {cookTime} min</Text>
+                  <Text as="span">Cocción: {cookTime} min</Text>
                 </Flex>
               )}
 
@@ -253,7 +258,7 @@ export const RecipeCard = ({
                   >
                     <span>people</span>
                   </Icon>
-                  <Text as="span">Serves: {servings}</Text>
+                  <Text as="span">Porciones: {servings}</Text>
                 </Flex>
               )}
             </Flex>
@@ -275,7 +280,7 @@ export const RecipeCard = ({
                 >
                   <span>book</span>
                 </Icon>
-                View Recipe
+                Ver Receta
               </Flex>
             </Button>
           </Flex>

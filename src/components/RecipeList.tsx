@@ -19,7 +19,7 @@ export const RecipeList = () => {
   return (
     <View backgroundColor={tokens.colors.background.primary}>
       <Heading level={3} padding={tokens.space.medium} textAlign="center">
-        Generate a Recipe
+        Recetas Generadas
       </Heading>
 
       <Collection

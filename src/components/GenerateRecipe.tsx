@@ -15,12 +15,12 @@ import React, { useState } from "react";
 import { useRecipeGenerator } from "../hooks/useRecipeGenerator";
 
 const predefinedRestrictions = [
-  "Gluten-Free",
-  "Vegetarian",
-  "Vegan",
-  "Dairy-Free",
-  "Nut-Free",
-  "Low-Carb",
+  "Sin Gluten",
+  "Vegetariano",
+  "Vegano",
+  "Sin Lácteos",
+  "Sin Frutos Secos",
+  "Bajo en Carbohidratos",
 ];
 
 export const GenerateRecipe = () => {
@@ -73,7 +73,7 @@ export const GenerateRecipe = () => {
     <View>
       <Card variation="elevated">
         <Heading level={3} padding={tokens.space.medium} textAlign="center">
-          Generate a Recipe
+          Generar una Receta
         </Heading>
 
         <form onSubmit={handleSubmit}>
@@ -83,29 +83,29 @@ export const GenerateRecipe = () => {
             padding={tokens.space.medium}
           >
             <RadioGroupField
-              legend="Generation Method"
+              legend="Método de Generación"
               name="generationType"
               value={generationType}
               onChange={(e) =>
                 setGenerationType(e.target.value as "idea" | "ingredients")
               }
             >
-              <Radio value="idea">By Idea</Radio>
-              <Radio value="ingredients">By Ingredients</Radio>
+              <Radio value="idea">Por Idea</Radio>
+              <Radio value="ingredients">Por Ingredientes</Radio>
             </RadioGroupField>
 
             {generationType === "idea" ? (
               <TextField
-                label="Recipe Idea"
-                placeholder="E.g. A light summer dinner"
+                label="Idea de Receta"
+                placeholder="Ej. Una cena ligera de verano"
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 required
               />
             ) : (
               <TextAreaField
-                label="Ingredients"
-                placeholder="Enter ingredients, one per line"
+                label="Ingredientes"
+                placeholder="Ingresa los ingredientes, separados por comas"
                 value={ingredients}
                 onChange={(e) => setIngredients(e.target.value)}
                 rows={4}
@@ -113,7 +113,7 @@ export const GenerateRecipe = () => {
               />
             )}
 
-            <Heading level={5}>Dietary Restrictions</Heading>
+            <Heading level={5}>Restricciones Dietéticas</Heading>
             <Flex direction="row" wrap="wrap" gap={tokens.space.small}>
               {predefinedRestrictions.map((restriction) => (
                 <Badge
@@ -163,25 +163,25 @@ export const GenerateRecipe = () => {
               gap={tokens.space.small}
             >
               <TextField
-                label="Add Custom Restriction"
-                placeholder="E.g. Low-sodium"
+                label="Añadir Restricción Personalizada"
+                placeholder="Ej. Bajo en sodio"
                 value={customRestriction}
                 onChange={(e) => setCustomRestriction(e.target.value)}
                 onKeyPress={handleKeyPress}
                 flex="1"
               />
               <Button onClick={addCustomRestriction} type="button">
-                Add
+                Añadir
               </Button>
             </Flex>
 
             <Button type="submit" variation="primary" width="100%">
-              Generate Recipe
+              Generar Receta
             </Button>
           </Flex>
         </form>
       </Card>
-      {loading && <p>Loading...</p>}
+      {loading && <p>Cargando...</p>}
     </View>
   );
 };
