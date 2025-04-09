@@ -81,7 +81,7 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
       prompt,
     });
     return object as Schema["generateRecipeFunc"]["returnType"];
-  } catch {
+  } catch (error) {
     return null;
   }
   return null;
