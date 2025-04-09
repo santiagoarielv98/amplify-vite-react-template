@@ -9,6 +9,7 @@ import { generateClient } from "aws-amplify/data";
 import { useEffect, useState } from "react";
 import { Schema } from "../../amplify/data/resource";
 import { RecipeCard } from "./RecipeCard";
+import { RecipeModal } from "./RecipeModal";
 
 const client = generateClient<Schema>();
 
@@ -16,6 +17,9 @@ export const RecipeList = () => {
   const { tokens } = useTheme();
   const [recipes, setRecipes] = useState<Schema["Recipe"]["type"][]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRecipe, setSelectedRecipe] = useState<
+    Schema["Recipe"]["type"] | null
+  >(null);
 
   useEffect(() => {
     client.models.Recipe.observeQuery().subscribe({
@@ -42,8 +46,20 @@ export const RecipeList = () => {
           </Text>
         }
       >
-        {(item, index) => <RecipeCard key={index} {...item} />}
+        {(item, index) => (
+          <RecipeCard
+            key={index}
+            recipe={item}
+            onClick={() => setSelectedRecipe(item)}
+          />
+        )}
       </Collection>
+
+      <RecipeModal
+        recipe={selectedRecipe}
+        isOpen={!!selectedRecipe}
+        onClose={() => setSelectedRecipe(null)}
+      />
     </View>
   );
 };

@@ -18,18 +18,25 @@ import { MdOutlineTimer } from "react-icons/md";
 import { Schema } from "../../amplify/data/resource";
 import { useImageGenerator } from "../hooks/useImageGenerator";
 
-export const RecipeCard = ({
-  id,
-  title,
-  description,
-  prepTime,
-  cookTime,
-  servings,
-  difficulty,
-  restrictions,
-  tags,
-  image,
-}: Schema["Recipe"]["type"]) => {
+interface RecipeCardProps {
+  recipe: Schema["Recipe"]["type"];
+  onClick: () => void;
+}
+
+export const RecipeCard = ({ recipe, onClick }: RecipeCardProps) => {
+  const {
+    id,
+    title,
+    description,
+    image,
+    difficulty,
+    tags,
+    restrictions,
+    prepTime,
+    cookTime,
+    servings,
+  } = recipe;
+
   const { tokens } = useTheme();
   const { error, generateImage, removeImage, isLoading } =
     useImageGenerator(id);
@@ -49,7 +56,7 @@ export const RecipeCard = ({
 
   return (
     <View padding={tokens.space.medium}>
-      <Card onClick={() => console.log("Card clicked", id)}>
+      <Card>
         <Flex
           direction={{
             base: "column",
@@ -60,7 +67,6 @@ export const RecipeCard = ({
           {image ? (
             <StorageImage
               alt={title}
-              // src={image}
               path={({ identityId }) => `images/${identityId}/${title}.png`}
               width={{
                 base: "100%",
@@ -264,6 +270,7 @@ export const RecipeCard = ({
             <Button
               variation="primary"
               marginTop={tokens.space.medium}
+              onClick={onClick}
               isFullWidth={
                 useBreakpointValue({
                   base: true,
