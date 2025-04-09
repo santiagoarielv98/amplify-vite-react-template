@@ -19,6 +19,7 @@
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
+    "@ai-sdk/google": "^1.2.10",
     "@aws-amplify/backend": "^1.5.0",
     "@aws-amplify/backend-cli": "^1.2.9",
     "@types/react": "^18.2.66",
@@ -26,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "ai": "^4.3.4",
     "aws-cdk": "^2.138.0",
     "aws-cdk-lib": "^2.138.0",
     "constructs": "^10.3.0",
@@ -38,6 +40,7 @@
     "prettier": "3.5.3",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "zod": "^3.24.2"
   }
 }
