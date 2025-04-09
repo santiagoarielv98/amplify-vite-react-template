@@ -6,6 +6,7 @@ import {
   Heading,
   Icon,
   Image,
+  Loader,
   Text,
   useBreakpointValue,
   useTheme,
@@ -14,10 +15,8 @@ import {
 import { Schema } from "../../amplify/data/resource";
 import { FiClock, FiBook, FiUsers } from "react-icons/fi";
 import { MdOutlineTimer } from "react-icons/md";
-// import { useImageGenerator } from "../hooks/_useImageGenerator";
-// import { generateClient } from "aws-amplify/data";
-
-// const client = generateClient<Schema>();
+import { BsImage } from "react-icons/bs";
+import { useImageGenerator } from "../hooks/useImageGenerator";
 
 export const RecipeCard = ({
   id,
@@ -32,35 +31,20 @@ export const RecipeCard = ({
   image,
 }: Schema["Recipe"]["type"]) => {
   const { tokens } = useTheme();
-  // const { loading, error, generateImage } = useImageGenerator();
-  // const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-  // const [imageUrl, setImageUrl] = useState<string | null>(image || null);
+  const { error, generateImage, isLoading } = useImageGenerator(id);
 
-  // const handleGenerateImage = async () => {
-  //   if (!title) return;
-  //   console.log(id);
+  const handleGenerateImage = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click event from firing
 
-  //   // setIsGeneratingImage(true);
-  //   // try {
-  //   //   const newImageUrl = await generateImage({
-  //   //     title,
-  //   //     description: description || undefined,
-  //   //   });
-
-  //   //   if (newImageUrl && id) {
-  //   //     // Update the recipe with the new image URL
-  //   //     await client.models.Recipe.update({
-  //   //       id,
-  //   //       image: newImageUrl,
-  //   //     });
-  //   //     setImageUrl(newImageUrl);
-  //   //   }
-  //   // } catch (err) {
-  //   //   console.error("Failed to generate image:", err);
-  //   // } finally {
-  //   //   setIsGeneratingImage(false);
-  //   // }
-  // };
+    try {
+      await generateImage({
+        title,
+        description: description ?? "-",
+      });
+    } catch (err) {
+      console.error("Error generating image:", err);
+    }
+  };
 
   return (
     <View padding={tokens.space.medium}>
@@ -105,7 +89,7 @@ export const RecipeCard = ({
                 aspectRatio: "1 / 1",
               }}
             >
-              {/* {isGeneratingImage ? (
+              {isLoading ? (
                 <Loader size="large" />
               ) : (
                 <>
@@ -120,13 +104,21 @@ export const RecipeCard = ({
                     size="small"
                     variation="link"
                     onClick={handleGenerateImage}
-                    isLoading={isGeneratingImage}
+                    isLoading={isLoading}
                     loadingText="Generando..."
                   >
                     Generar Imagen
                   </Button>
+                  {error && (
+                    <Text
+                      color={tokens.colors.red["60"]}
+                      fontSize={tokens.fontSizes.small}
+                    >
+                      Error: {error.message}
+                    </Text>
+                  )}
                 </>
-              )} */}
+              )}
             </Flex>
           )}
 

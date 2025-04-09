@@ -1,8 +1,7 @@
 import React from "react";
 import { client } from "../client";
 import { Recipe } from "../types/api";
-
-const baseUrl = import.meta.env.VITE_API_URL;
+import { baseUrl } from "../config/api";
 
 export const useRecipeGenerator = () => {
   const [generationType, setGenerationType] = React.useState<
