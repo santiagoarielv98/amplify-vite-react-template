@@ -4,6 +4,7 @@ import {
   Card,
   Flex,
   Heading,
+  Loader,
   Radio,
   RadioGroupField,
   TextAreaField,
@@ -70,7 +71,7 @@ export const GenerateRecipe = () => {
   };
 
   return (
-    <View>
+    <View position="relative">
       <Card variation="elevated">
         <Heading level={3} padding={tokens.space.medium} textAlign="center">
           Generar una Receta
@@ -89,6 +90,7 @@ export const GenerateRecipe = () => {
               onChange={(e) =>
                 setGenerationType(e.target.value as "idea" | "ingredients")
               }
+              isDisabled={loading}
             >
               <Radio value="idea">Por Idea</Radio>
               <Radio value="ingredients">Por Ingredientes</Radio>
@@ -101,6 +103,7 @@ export const GenerateRecipe = () => {
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 required
+                isDisabled={loading}
               />
             ) : (
               <TextAreaField
@@ -110,6 +113,7 @@ export const GenerateRecipe = () => {
                 onChange={(e) => setIngredients(e.target.value)}
                 rows={4}
                 required
+                isDisabled={loading}
               />
             )}
 
@@ -121,9 +125,9 @@ export const GenerateRecipe = () => {
                   variation={
                     restrictions.includes(restriction) ? "success" : "warning"
                   }
-                  onClick={() => toggleRestriction(restriction)}
+                  onClick={() => !loading && toggleRestriction(restriction)}
                   style={{
-                    cursor: "pointer",
+                    cursor: loading ? "not-allowed" : "pointer",
                     opacity: restrictions.includes(restriction) ? 1 : 0.7,
                     padding: "8px 12px",
                   }}
@@ -138,9 +142,9 @@ export const GenerateRecipe = () => {
                   <Badge
                     key={customR}
                     variation="success"
-                    onClick={() => toggleRestriction(customR)}
+                    onClick={() => !loading && toggleRestriction(customR)}
                     style={{
-                      cursor: "pointer",
+                      cursor: loading ? "not-allowed" : "pointer",
                       padding: "8px 12px",
                     }}
                   >
@@ -169,19 +173,49 @@ export const GenerateRecipe = () => {
                 onChange={(e) => setCustomRestriction(e.target.value)}
                 onKeyPress={handleKeyPress}
                 flex="1"
+                isDisabled={loading}
               />
-              <Button onClick={addCustomRestriction} type="button">
+              <Button
+                onClick={addCustomRestriction}
+                type="button"
+                isDisabled={loading}
+              >
                 Añadir
               </Button>
             </Flex>
 
-            <Button type="submit" variation="primary" width="100%">
+            <Button
+              type="submit"
+              variation="primary"
+              width="100%"
+              isLoading={loading}
+              loadingText="Generando receta..."
+              isDisabled={loading}
+            >
               Generar Receta
             </Button>
           </Flex>
         </form>
       </Card>
-      {loading && <p>Cargando...</p>}
+
+      {loading && (
+        <Flex
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="rgba(255, 255, 255, 0.7)"
+          style={{ backdropFilter: "blur(2px)" }}
+        >
+          <Flex direction="column" alignItems="center" gap={tokens.space.small}>
+            <Loader size="large" />
+            <Heading level={6}>Generando Receta...</Heading>
+          </Flex>
+        </Flex>
+      )}
     </View>
   );
 };

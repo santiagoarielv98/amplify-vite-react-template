@@ -12,6 +12,8 @@ import {
   View,
 } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
+import { FiClock, FiBook, FiUsers } from "react-icons/fi";
+import { MdOutlineTimer } from "react-icons/md";
 // import { useImageGenerator } from "../hooks/_useImageGenerator";
 // import { generateClient } from "aws-amplify/data";
 
@@ -111,7 +113,7 @@ export const RecipeCard = ({
                     ariaLabel="No image"
                     viewBox={{ width: 24, height: 24 }}
                   >
-                    <span>image</span>
+                    <BsImage size={24} />
                   </Icon>
                   <Text>No hay imagen disponible</Text>
                   <Button
@@ -232,7 +234,7 @@ export const RecipeCard = ({
                     ariaLabel="Prep time"
                     viewBox={{ width: 20, height: 20 }}
                   >
-                    <span>clock</span>
+                    <FiClock size={20} />
                   </Icon>
                   <Text as="span">Preparación: {prepTime} min</Text>
                 </Flex>
@@ -244,7 +246,7 @@ export const RecipeCard = ({
                     ariaLabel="Cook time"
                     viewBox={{ width: 20, height: 20 }}
                   >
-                    <span>timer</span>
+                    <MdOutlineTimer size={20} />
                   </Icon>
                   <Text as="span">Cocción: {cookTime} min</Text>
                 </Flex>
@@ -256,7 +258,7 @@ export const RecipeCard = ({
                     ariaLabel="Servings"
                     viewBox={{ width: 20, height: 20 }}
                   >
-                    <span>people</span>
+                    <FiUsers size={20} />
                   </Icon>
                   <Text as="span">Porciones: {servings}</Text>
                 </Flex>
@@ -278,7 +280,7 @@ export const RecipeCard = ({
                   ariaLabel="View recipe"
                   viewBox={{ width: 20, height: 20 }}
                 >
-                  <span>book</span>
+                  <FiBook size={20} />
                 </Icon>
                 Ver Receta
               </Flex>
