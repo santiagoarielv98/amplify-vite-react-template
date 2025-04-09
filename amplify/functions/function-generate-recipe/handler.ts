@@ -1,7 +1,12 @@
-import { google } from "@ai-sdk/google";
+import { env } from "$amplify/env/functionGenerateRecipe";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { Schema } from "../../data/resource";
 import { z } from "zod";
+
+const google = createGoogleGenerativeAI({
+  apiKey: env.GOOGLE_GENERATIVE_AI_API_KEY,
+});
 
 const recipeSchema = z.object({
   title: z.string(),
@@ -21,8 +26,10 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
 ) => {
   try {
     const { generateType, idea, ingredients, restrictions } = event.arguments;
+    console.log("args: ", event.arguments);
 
     if (generateType === "idea" && !idea) {
+      console.log("Missing idea");
       return null;
     }
 
@@ -30,6 +37,7 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
       generateType === "ingredients" &&
       (!ingredients || ingredients.length === 0)
     ) {
+      console.log("Missing ingredients");
       return null;
     }
 
@@ -54,25 +62,6 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
     prompt +=
       "The output should be in the same language as the input. Example ingredients: 'chicken, rice, broccoli'. -> english, ingredients: 'pollo, arroz, brócoli'. -> español.";
 
-    if (generateType === "idea") {
-      prompt = `Create a detailed recipe based on this idea: ${idea}.${
-        ingredients && ingredients.length > 0
-          ? ` Using these ingredients: ${ingredients.join(", ")}.`
-          : ""
-      }${
-        restrictions && restrictions.length > 0
-          ? ` Consider these dietary restrictions: ${restrictions.join(", ")}.`
-          : ""
-      }`;
-    } else {
-      prompt = `Create a detailed recipe using these ingredients: ${ingredients!.join(", ")}.${
-        restrictions && restrictions.length > 0
-          ? ` Consider these dietary restrictions: ${restrictions.join(", ")}.`
-          : ""
-      }`;
-    }
-    prompt +=
-      "The output should be in the same language as the input. Example ingredients: 'chicken, rice, broccoli'. -> english, ingredients: 'pollo, arroz, brócoli'. -> español.";
     console.log("Prompt:", prompt);
 
     const { object } = await generateObject({
@@ -82,6 +71,7 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
     });
     return object as Schema["generateRecipeFunc"]["returnType"];
   } catch (error) {
+    console.error("Error generating recipe:", error);
     return null;
   }
   return null;

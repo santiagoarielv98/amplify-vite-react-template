@@ -8,4 +8,5 @@ export const functionGenerateRecipe = defineFunction({
   environment: {
     GOOGLE_GENERATIVE_AI_API_KEY: secret("GOOGLE_GENERATIVE_AI_API_KEY"),
   },
+  timeoutSeconds: 10,
 });
