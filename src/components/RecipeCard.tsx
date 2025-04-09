@@ -5,17 +5,17 @@ import {
   Flex,
   Heading,
   Icon,
-  Image,
   Loader,
   Text,
   useBreakpointValue,
   useTheme,
   View,
 } from "@aws-amplify/ui-react";
-import { Schema } from "../../amplify/data/resource";
-import { FiClock, FiBook, FiUsers } from "react-icons/fi";
-import { MdOutlineTimer } from "react-icons/md";
+import { StorageImage } from "@aws-amplify/ui-react-storage";
 import { BsImage } from "react-icons/bs";
+import { FiBook, FiClock, FiUsers } from "react-icons/fi";
+import { MdOutlineTimer } from "react-icons/md";
+import { Schema } from "../../amplify/data/resource";
 import { useImageGenerator } from "../hooks/useImageGenerator";
 
 export const RecipeCard = ({
@@ -31,7 +31,8 @@ export const RecipeCard = ({
   image,
 }: Schema["Recipe"]["type"]) => {
   const { tokens } = useTheme();
-  const { error, generateImage, isLoading } = useImageGenerator(id);
+  const { error, generateImage, removeImage, isLoading } =
+    useImageGenerator(id);
 
   const handleGenerateImage = async (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click event from firing
@@ -39,7 +40,7 @@ export const RecipeCard = ({
     try {
       await generateImage({
         title,
-        description: description ?? "-",
+        description: description ?? "",
       });
     } catch (err) {
       console.error("Error generating image:", err);
@@ -57,9 +58,10 @@ export const RecipeCard = ({
           alignItems="flex-start"
         >
           {image ? (
-            <Image
+            <StorageImage
               alt={title}
-              src={image}
+              // src={image}
+              path={({ identityId }) => `images/${identityId}/${title}.png`}
               width={{
                 base: "100%",
                 medium: "33%",
@@ -69,6 +71,8 @@ export const RecipeCard = ({
                 medium: "auto",
               }}
               objectFit="cover"
+              aspectRatio={"1 / 1"}
+              onClick={removeImage}
             />
           ) : (
             <Flex

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { baseUrl } from "../config/api";
 import { uploadData } from "aws-amplify/storage";
 import { client } from "../client";
+import { base64ToBlob } from "../utils/image";
 
 interface ImageGeneratorInput {
   title: string;
@@ -43,9 +44,14 @@ export const useImageGenerator = (id: string) => {
         throw new Error("Invalid response data");
       }
 
+      const { base64Data, mimeType } = data;
+
+      const blob = base64ToBlob(base64Data, mimeType);
+      const file = new File([blob], `${title}.png`, { type: mimeType });
+
       const result = await uploadData({
         path: ({ identityId }) => `images/${identityId}/${title}.png`,
-        data: data.base64Data,
+        data: file,
       }).result;
 
       client.models.Recipe.update({ id, image: result.path });
@@ -61,8 +67,16 @@ export const useImageGenerator = (id: string) => {
     }
   };
 
+  const removeImage = async () => {
+    await client.models.Recipe.update({
+      id,
+      image: null,
+    });
+  };
+
   return {
     generateImage,
+    removeImage,
     isLoading,
     error,
   };
