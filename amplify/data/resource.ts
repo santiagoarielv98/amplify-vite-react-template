@@ -7,8 +7,8 @@ const schema = a.schema({
     .arguments({
       generateType: a.enum(["idea", "ingredients"]),
       idea: a.string(),
-      ingredients: a.string().array().default([]),
-      restrictions: a.string().array().default([]),
+      ingredients: a.string().array(),
+      restrictions: a.string().array(),
     })
     .returns(a.ref("Recipe"))
     .authorization((allow) => [allow.authenticated()])
