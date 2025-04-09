@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Heading,
@@ -13,13 +13,23 @@ import {
   Badge,
 } from "@aws-amplify/ui-react";
 import { useState } from "react";
+import { useRecipeGenerator } from "../hooks/useRecipeGenerator";
 
 export const GenerateRecipe = () => {
   const { tokens } = useTheme();
-  const [generationType, setGenerationType] = useState("idea");
-  const [idea, setIdea] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [restrictions, setRestrictions] = useState<string[]>([]);
+  const {
+    data,
+    isLoading: loading,
+    generationType,
+    setGenerationType,
+    idea,
+    setIdea,
+    ingredients,
+    setIngredients,
+    restrictions,
+    setRestrictions,
+    generateRecipe,
+  } = useRecipeGenerator();
   const [customRestriction, setCustomRestriction] = useState("");
 
   const predefinedRestrictions = [
@@ -65,11 +75,17 @@ export const GenerateRecipe = () => {
       ingredients: generationType === "ingredients" ? ingredients : "",
       restrictions,
     });
+    generateRecipe();
+
     // Reset form
     setIdea("");
     setIngredients("");
     setRestrictions([]);
   };
+
+  useEffect(() => {
+    console.log("Data updated:", data);
+  }, [data]);
 
   return (
     <View>
@@ -88,7 +104,9 @@ export const GenerateRecipe = () => {
               legend="Generation Method"
               name="generationType"
               value={generationType}
-              onChange={(e) => setGenerationType(e.target.value)}
+              onChange={(e) =>
+                setGenerationType(e.target.value as "idea" | "ingredients")
+              }
             >
               <Radio value="idea">By Idea</Radio>
               <Radio value="ingredients">By Ingredients</Radio>
@@ -181,6 +199,8 @@ export const GenerateRecipe = () => {
           </Flex>
         </form>
       </Card>
+      {loading && <p>Loading...</p>}
+      {data && <pre>{JSON.stringify(data)}</pre>}
     </View>
   );
 };

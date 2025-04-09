@@ -28,15 +28,11 @@ export const useRecipeGenerator = () => {
     }
   };
 
-  const handleIdeaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIdea(e.target.value);
-  };
-
   return {
     generationType,
     setGenerationType,
     idea,
-    setIdea: handleIdeaChange,
+    setIdea,
     ingredients,
     setIngredients,
     restrictions,

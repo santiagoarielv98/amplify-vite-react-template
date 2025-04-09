@@ -19,7 +19,13 @@ const schema = a.schema({
   generateRecipe: a
     .generation({
       aiModel: a.ai.model("Claude 3 Haiku"),
-      systemPrompt: ``,
+      systemPrompt: `
+        Generate a recipe based on the following details:
+        - Generation Type: {generationType}
+        - Idea: {idea}
+        - Ingredients: {ingredients}
+        - Restrictions: {restrictions}
+        - Format the response as JSON`,
     })
     .arguments({
       generationType: a.enum(["idea", "ingredients"]),
@@ -27,31 +33,36 @@ const schema = a.schema({
       ingredients: a.string(),
       restrictions: a.string().array(),
     })
-    .returns({
-      title: a.string(),
-      description: a.string(),
-      prepTime: a.integer(),
-      cookTime: a.integer(),
-      servings: a.integer(),
-      difficulty: a.enum(["easy", "medium", "hard"]),
-      ingredients: a.string().array(),
-      restrictions: a.string().array(),
-      steps: a.string().array(),
-      tags: a.string().array(),
-    })
+    .returns(
+      a.customType({
+        title: a.string().required(),
+        description: a.string(),
+        prepTime: a.integer(),
+        cookTime: a.integer(),
+        servings: a.integer(),
+        difficulty: a.enum(["easy", "medium", "hard"]),
+        ingredients: a.string().array(),
+        restrictions: a.string().array(),
+        steps: a.string().array(),
+        tags: a.string().array(),
+      }),
+    )
     .authorization((allow) => [allow.authenticated()]),
   generateImage: a
     .generation({
       aiModel: a.ai.model("Claude 3 Haiku"),
-      systemPrompt: ``,
+      systemPrompt: `Generate an image of a recipe card with the following details:`,
     })
     .arguments({
       title: a.string(),
       description: a.string(),
     })
-    .returns({
-      imageUrl: a.string(),
-    }),
+    .returns(
+      a.customType({
+        imageUrl: a.string(),
+      }),
+    )
+    .authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
