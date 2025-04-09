@@ -1,6 +1,6 @@
 import { Schema } from "../../data/resource";
 
-export const handler: Schema["generateRecipe"]["functionHandler"] = async (
+export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
   event,
 ) => {
   const { generateType, idea, ingredients, restrictions } = event.arguments;
