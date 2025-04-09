@@ -27,6 +27,7 @@ export const handler: Schema["generateRecipeFunc"]["functionHandler"] = async (
   try {
     const { generateType, idea, ingredients, restrictions } = event.arguments;
     console.log("args: ", event.arguments);
+    console.log("credentials", env.GOOGLE_GENERATIVE_AI_API_KEY);
 
     if (generateType === "idea" && !idea) {
       console.log("Missing idea");

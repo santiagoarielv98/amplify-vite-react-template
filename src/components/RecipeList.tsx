@@ -33,18 +33,6 @@ export const RecipeList = () => {
       <Heading level={3} padding={tokens.space.medium} textAlign="center">
         Recetas Generadas
       </Heading>
-      <button
-        onClick={() =>
-          client.queries.generateRecipeFunc({
-            generateType: "idea",
-            idea: "Una super idea",
-            ingredients: ["1 taza de arroz", "2 tazas de agua"],
-            restrictions: ["sin gluten"],
-          })
-        }
-      >
-        demo
-      </button>
       <Collection
         items={recipes}
         type="list"
