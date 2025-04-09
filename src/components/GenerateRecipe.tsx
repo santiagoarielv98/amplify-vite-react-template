@@ -14,6 +14,15 @@ import {
 import React, { useState } from "react";
 import { useRecipeGenerator } from "../hooks/useRecipeGenerator";
 
+const predefinedRestrictions = [
+  "Gluten-Free",
+  "Vegetarian",
+  "Vegan",
+  "Dairy-Free",
+  "Nut-Free",
+  "Low-Carb",
+];
+
 export const GenerateRecipe = () => {
   const { tokens } = useTheme();
   const {
@@ -29,15 +38,6 @@ export const GenerateRecipe = () => {
     generateRecipe,
   } = useRecipeGenerator();
   const [customRestriction, setCustomRestriction] = useState("");
-
-  const predefinedRestrictions = [
-    "Gluten-Free",
-    "Vegetarian",
-    "Vegan",
-    "Dairy-Free",
-    "Nut-Free",
-    "Low-Carb",
-  ];
 
   const toggleRestriction = (restriction: string) => {
     if (restrictions.includes(restriction)) {
