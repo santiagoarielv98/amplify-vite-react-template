@@ -1,5 +1,8 @@
 import React from "react";
-import { useAIGeneration } from "../client";
+import { client } from "../client";
+import { Recipe } from "../types/api";
+
+const baseUrl = import.meta.env.VITE_API_URL;
 
 export const useRecipeGenerator = () => {
   const [generationType, setGenerationType] = React.useState<
@@ -8,23 +11,55 @@ export const useRecipeGenerator = () => {
   const [idea, setIdea] = React.useState("");
   const [ingredients, setIngredients] = React.useState("");
   const [restrictions, setRestrictions] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const [{ data, isLoading }, generateRecipe] =
-    useAIGeneration("generateRecipe");
+  const generateRecipe = async () => {
+    if (loading) return;
+    if (["idea", "ingredients"].includes(generationType)) {
+      setLoading(true);
+      try {
+        const response = await fetch(`${baseUrl}/recipes`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            generationType,
+            idea,
+            ingredients: ingredients
+              .split(",")
+              .map((i) => i.trim())
+              .filter(Boolean),
+            restrictions,
+          }),
+        });
 
-  const handleClick = async () => {
-    if (generationType === "idea") {
-      generateRecipe({
-        generationType,
-        idea,
-        restrictions,
-      });
-    } else {
-      generateRecipe({
-        generationType,
-        ingredients,
-        restrictions,
-      });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = (await response.json()) as Recipe;
+        client.models.Recipe.create({
+          title: result.title,
+          description: result.description,
+          ingredients: result.ingredients,
+          cookTime: result.cookTime,
+          prepTime: result.prepTime,
+          difficulty: result.difficulty,
+          restrictions: result.restrictions,
+          servings: result.servings,
+          steps: result.steps,
+          tags: result.tags,
+        });
+        setIdea("");
+        setIngredients("");
+        setRestrictions([]);
+        setGenerationType("idea");
+      } catch (error) {
+        console.error("Error generating recipe:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -37,8 +72,7 @@ export const useRecipeGenerator = () => {
     setIngredients,
     restrictions,
     setRestrictions,
-    generateRecipe: handleClick,
-    data,
-    isLoading,
+    generateRecipe,
+    isLoading: loading,
   };
 };

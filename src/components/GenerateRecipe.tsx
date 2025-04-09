@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
 import {
-  Card,
-  Heading,
-  RadioGroupField,
-  Radio,
-  TextField,
-  TextAreaField,
+  Badge,
   Button,
+  Card,
   Flex,
+  Heading,
+  Radio,
+  RadioGroupField,
+  TextAreaField,
+  TextField,
   View,
   useTheme,
-  Badge,
 } from "@aws-amplify/ui-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRecipeGenerator } from "../hooks/useRecipeGenerator";
 
 export const GenerateRecipe = () => {
   const { tokens } = useTheme();
   const {
-    data,
     isLoading: loading,
     generationType,
     setGenerationType,
@@ -66,26 +64,10 @@ export const GenerateRecipe = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would handle the recipe generation
-    console.log({
-      generationType,
-      idea: generationType === "idea" ? idea : "",
-      ingredients: generationType === "ingredients" ? ingredients : "",
-      restrictions,
-    });
-    generateRecipe();
-
-    // Reset form
-    setIdea("");
-    setIngredients("");
-    setRestrictions([]);
+    await generateRecipe();
   };
-
-  useEffect(() => {
-    console.log("Data updated:", data);
-  }, [data]);
 
   return (
     <View>
@@ -200,7 +182,6 @@ export const GenerateRecipe = () => {
         </form>
       </Card>
       {loading && <p>Loading...</p>}
-      {data && <pre>{JSON.stringify(data)}</pre>}
     </View>
   );
 };
